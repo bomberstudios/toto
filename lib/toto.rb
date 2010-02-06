@@ -225,11 +225,11 @@ module Toto
       markdown self[:body].sub(@config[:summary][:delim], '') rescue markdown self[:body]
     end
 
-    def title()   self[:title] || "an article"               end
-    def date()    @config[:date, self[:date]]                end
-    def path()    self[:date].strftime("/%Y/%m/%d/#{slug}/") end
-    def author()  self[:author] || @config[:author]          end
-    def to_html() self.load; super(:article)                 end
+    def title()   self[:title] || "an article"                             end
+    def date()    @config[:date, self[:date]]                              end
+    def path()    self[:date].strftime("/#{@config[:permalink]}#{slug}/")  end
+    def author()  self[:author] || @config[:author]                        end
+    def to_html() self.load; super(:article)                               end
 
     alias :to_s to_html
 
@@ -254,6 +254,7 @@ module Toto
       :title => Dir.pwd.split('/').last,                  # site title
       :root => "index",                                   # site index
       :url => "http://127.0.0.1",
+      :permalink => "%Y/%m/%d/",                          # permalink prefix format
       :date => lambda {|now| now.strftime("%d/%m/%Y") },  # date function
       :markdown => :smart,                                # use markdown
       :disqus => false,                                   # disqus name

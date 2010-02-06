@@ -118,6 +118,8 @@ context Toto do
 
     context "with everything specified" do
       setup do
+        @config[:permalink] = "%Y/"
+
         Toto::Article.new({
           :title  => "The Wizard of Oz",
           :body   => ("a little bit of text." * 5) + "\n" + "filler" * 10,
@@ -127,9 +129,10 @@ context Toto do
         }, @config)
       end
 
-      should("parse the date") { [topic[:date].month, topic[:date].year] }.equals [10, 1976]
-      should("use the slug")   { topic.slug }.equals "wizard-of-oz"
-      should("use the author") { topic.author }.equals "toetoe"
+      should("parse the date")    { [topic[:date].month, topic[:date].year] }.equals [10, 1976]
+      should("use the slug")      { topic.slug }.equals "wizard-of-oz"
+      should("use the author")    { topic.author }.equals "toetoe"
+      should("use the permalink") { topic.path }.equals "/1976/wizard-of-oz/"
 
       context "and long first paragraph" do
         should("create a valid summary") { topic.summary }.equals "<p>" + ("a little bit of text." * 5).chop + "&hellip;</p>\n"
